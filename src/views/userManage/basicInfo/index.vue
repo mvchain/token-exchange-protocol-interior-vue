@@ -1,8 +1,5 @@
 <template>
-  <transition name="fade" mode="out-in">
-    <!-- <router-view :key="key"></router-view> -->
-    <router-view></router-view>
-  </transition>
+  <div>用户列表</div>
 </template>
 
 <script>

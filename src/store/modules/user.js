@@ -1,30 +1,25 @@
-import { login, logout, getInfo } from '@/api/login'
+import { login, refreshToken } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
   state: {
     token: getToken(),
-    avatar: ''
   },
 
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
-    },
-    SET_AVATAR: (state, avatar) => {
-      state.avatar = avatar
     }
   },
 
   actions: {
     // 登录
-    Login({ commit }, userInfo) {
+    Login({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        login(userInfo).then(response => {
-          const data = response.data
-          setToken(data)
-          commit('SET_AVATAR', userInfo.username)
-          commit('SET_TOKEN', data)
+        login(payload).then(res => {
+          window.sessionStorage.setItem('user', JSON.stringify({refreshToken: res.data.refreshToken, username: payload.username}))
+          setToken(res.data.token)
+          commit('SET_TOKEN', res.data.token)
           resolve()
         }).catch(error => {
           reject(error)
@@ -35,13 +30,9 @@ const user = {
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
-        // logout(state.token).then(() => {
-        //
-        // }).catch(error => {
-        //   reject(error)
-        // })
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
+        window.sessionStorage.clear()
         removeToken()
         resolve()
       })
@@ -54,7 +45,20 @@ const user = {
         removeToken()
         resolve()
       })
-    }
+    },
+    getReferToken: () => {
+      const rToken = getToken();
+      let user = JSON.parse(window.sessionStorage.getItem('user'));
+      return new Promise((resolve, reject) => {
+        refreshToken(rToken).then(res => {
+          window.sessionStorage.setItem('user', JSON.stringify({refreshToken: res.data, username: user.username}));
+          setToken(res.data);
+          resolve();
+        }).catch(error => {
+          reject(error);
+        });
+      });
+    },
   }
 }
 

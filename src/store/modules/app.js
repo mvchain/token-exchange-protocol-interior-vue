@@ -1,11 +1,9 @@
 import Cookies from 'js-cookie'
-import { getUserList, addUser, updateUser } from '@/api/backSetting'
 const app = {
   state: {
     sidebar: {
       opened: !+Cookies.get('sidebarStatus')
-    },
-    userList: {}
+    }
   },
   mutations: {
     TOGGLE_SIDEBAR: state => {
@@ -23,34 +21,6 @@ const app = {
   actions: {
     ToggleSideBar: ({ commit }) => {
       commit('TOGGLE_SIDEBAR')
-    },
-    getUserList: ({ commit, state }, payload) => {
-      return new Promise((resolve, reject) => {
-        getUserList(payload).then(res => {
-          commit('SET_USER_LIST', res.data)
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
-      })
-    },
-    setUserList: ({ commit, state }, payload) => {
-      return new Promise((resolve, reject) => {
-        addUser(payload).then(res => {
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
-      })
-    },
-    updateUser: ({ commit, state }, payload) => {
-      return new Promise((resolve, reject) => {
-        updateUser(payload).then(res => {
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
-      })
     }
   }
 }

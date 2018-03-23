@@ -35,29 +35,35 @@ export const constantRouterMap = [
   },
 
   {
-    path: '/workSpace',
+    path: '/projectManage',
     component: Layout,
-    redirect: '/workSpace/funcSetting',
-    name: 'workSpace',
-    meta: { title: '工作台', icon: 'example' },
+    redirect: '/projectManage/projectIndex',
+    name: 'projectManage',
+    meta: { title: '项目管理', icon: 'example' },
     children: [
       {
-        path: 'funcSetting',
-        name: 'funcSetting',
-        component: _import('workSpace/funcSetting/index'),
-        meta: { title: '前端功能设置', icon: 'example' }
+        path: 'projectIndex',
+        name: 'projectIndex',
+        component: _import('projectManage/index'),
+        meta: { title: '项目管理', icon: 'example' }
       },
       {
-        path: 'operationRecord',
-        name: 'operationRecord',
-        component: _import('workSpace/operationRecord/index'),
-        meta: { title: '用户操作记录', icon: 'example' }
+        path: 'projectData',
+        name: 'projectData',
+        component: _import('projectManage/projectData/index'),
+        meta: { title: '项目数据', icon: 'example' }
       },
       {
-        path: 'manuallyCoin',
-        name: 'manuallyCoin',
-        component: _import('workSpace/manuallyCoin/index'),
-        meta: { title: '手动提币功能', icon: 'example' }
+        path: 'projectEdit',
+        name: 'projectEdit',
+        component: _import('projectManage/projectEdit/index'),
+        meta: { title: '项目编辑', icon: 'example' }
+      },
+      {
+        path: 'addProject',
+        name: 'addProject',
+        component: _import('projectManage/addProject/index'),
+        meta: { title: '新建项目', icon: 'example' }
       }
     ]
   },
@@ -71,86 +77,29 @@ export const constantRouterMap = [
       {
         path: 'basicInfo',
         name: 'basicInfo',
-        redirect: '/userManage/basicInfo/manageList',
         component: _import('userManage/basicInfo/index'),
-        meta: { title: '基本信息', icon: 'table' },
-        children: [
-          {
-            path: 'manageList',
-            name: 'manageList',
-            meta: { title: '信息列表', icon: 'table' },
-            component: _import('userManage/basicInfo/manageList/index')
-          },
-          {
-            path: 'changePassword',
-            name: 'changePassword',
-            meta: { title: '密码修改', icon: 'table' },
-            component: _import('userManage/basicInfo/changePassword/index')
-          },
-          {
-            path: 'changePhone',
-            name: 'changePhone',
-            meta: { title: '手机修改', icon: 'table' },
-            component: _import('userManage/basicInfo/changePhone/index')
-          },
-          {
-            path: 'frozenAccount',
-            name: 'frozenAccount',
-            meta: { title: '账户冻结', icon: 'table' },
-            component: _import('userManage/basicInfo/frozenAccount/index')
-          },
-          {
-            path: 'lockRecord',
-            name: 'lockRecord',
-            meta: { title: '锁仓记录', icon: 'table' },
-            component: _import('userManage/basicInfo/lockRecord/index')
-          },
-          {
-            path: 'rechargeRecord',
-            name: 'rechargeRecord',
-            meta: { title: '充值记录', icon: 'table' },
-            component: _import('userManage/basicInfo/rechargeRecord/index')
-          },
-          {
-            path: 'withDrawalsRecord',
-            name: 'withDrawalsRecord',
-            meta: { title: '提币记录', icon: 'table' },
-            component: _import('userManage/basicInfo/withDrawalsRecord/index')
-          }
-        ]
+        meta: { title: '用户列表', icon: 'table' }
+      },
+      {
+        path: 'userInfo',
+        name: 'userInfo',
+        component: _import('userManage/userInfo/index'),
+        meta: { title: '用户详情', icon: 'table' }
       }
     ]
   },
   {
-    path: '/dataCenter',
+    path: '/rechargeWithdraw',
     component: Layout,
-    redirect: '/dataCenter/totalData',
-    name: 'dataCenter',
-    meta: { title: '数据中心', icon: 'wallet' },
+    redirect: '/rechargeWithdraw/rwManage',
+    name: 'rechargeWithdraw',
+    meta: { title: '充提管理', icon: 'teacher' },
     children: [
       {
-        path: 'totalData',
-        name: 'totalData',
-        component: _import('dataCenter/totalData/index'),
-        meta: { title: '总数据', icon: 'wallet' }
-      },
-      {
-        path: 'dayData',
-        name: 'dayData',
-        component: _import('dataCenter/dayData/index'),
-        meta: { title: '日数据', icon: 'wallet' }
-      },
-      {
-        path: 'weekData',
-        name: 'weekData',
-        component: _import('dataCenter/weekData/index'),
-        meta: { title: '周数据', icon: 'wallet' }
-      },
-      {
-        path: 'monthData',
-        name: 'monthData',
-        component: _import('dataCenter/monthData/index'),
-        meta: { title: '月数据', icon: 'wallet' }
+        path: 'rwManage',
+        name: 'rwManage',
+        component: _import('rechargeWithdraw/index'),
+        meta: { title: '充提', icon: 'teacher' }
       }
     ]
   },
@@ -159,13 +108,13 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/backSetting/addManage',
     name: 'backSetting',
-    meta: { title: '数据中心', icon: 'teacher' },
+    meta: { title: '设置', icon: 'teacher' },
     children: [
       {
         path: 'addManage',
         name: 'addManage',
-        component: _import('backSetting/addManage/index'),
-        meta: { title: '管理员设置', icon: 'teacher' }
+        component: _import('backSetting/index'),
+        meta: { title: '设置', icon: 'teacher' }
       }
     ]
   },

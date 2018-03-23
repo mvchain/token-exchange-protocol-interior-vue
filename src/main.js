@@ -7,11 +7,13 @@ import router from './router'
 import store from './store'
 import '@/icons' // icon
 import '@/permission' // 权限
-
+import * as filters from './filters'; // 全局filter
 Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false
-
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key]);
+});
 new Vue({
   el: '#app',
   router,

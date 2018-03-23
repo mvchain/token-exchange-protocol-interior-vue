@@ -1,26 +1,28 @@
 <template>
   <div class="login-container">
-    <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left" label-width="0px"
-      class="card-box login-form">
-      <h3 class="title">MVC控制中心</h3>
+    <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left"
+             label-width="0px"
+             class="card-box login-form">
+      <h3 class="title">token-sell控制中心</h3>
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
-          <svg-icon icon-class="user" />
+          <svg-icon icon-class="user"/>
         </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username" />
+        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username"/>
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password"></svg-icon>
         </span>
-        <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"
-          placeholder="password"></el-input>
-          <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
+        <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password"
+                  autoComplete="on"
+                  placeholder="password"></el-input>
+        <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye"/></span>
       </el-form-item>
       <el-form-item prop="valiCode">
         <el-row class="verification-con">
           <el-col :span="18" class="verification-e">
-            <el-input v-model="loginForm.valiCode"></el-input>
+            <el-input v-model="loginForm.imageCode"></el-input>
           </el-col>
           <el-col :span="6" class="verification-s">
             <span @click="changeVerification">
@@ -39,75 +41,88 @@
 </template>
 
 <script>
-import md5 from 'blueimp-md5'
-export default {
-  name: 'login',
-  mounted() {
-    this.createCode()
-  },
-  data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error('请输入正确的用户名'))
-      } else {
-        callback()
-      }
-    }
-    const validatePass = (rule, value, callback) => {
-      if (value.length < 5) {
-        callback(new Error('密码不能小于5位'))
-      } else {
-        callback()
-      }
-    }
-    return {
-      loginForm: {
-        username: 'user',
-        password: 'admin',
-        valiCode: 'sdf'
-      },
-      loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePass }]
-      },
-      loading: false,
-      pwdType: 'password',
-      verificationImg: ''
-    }
-  },
-  methods: {
-    createCode() {
-      this.verificationImg = window.urlData.url + '/account/validate/image?t=' + Date.parse(new Date())
-    },
-    showPwd() {
-      if (this.pwdType === 'password') {
-        this.pwdType = ''
-      } else {
-        this.pwdType = 'password'
-      }
-    },
-    changeVerification() {
+  import md5 from 'blueimp-md5'
+  import axi from 'axios'
+
+  export default {
+    name: 'login',
+    mounted() {
       this.createCode()
     },
-    handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        this.$store.dispatch('Login', this.loginForm).then(() => {
-          this.loading = false
-          this.$router.push({ path: '/' })
-        }).catch(() => {
-          this.loading = false
+    data() {
+      const validateUsername = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error('请输入正确的用户名'))
+        } else {
+          callback()
+        }
+      }
+      const validatePass = (rule, value, callback) => {
+        if (value.length < 5) {
+          callback(new Error('密码不能小于5位'))
+        } else {
+          callback()
+        }
+      }
+      return {
+        loginForm: {
+          username: 'mvc-admin',
+          password: 'admin',
+          imageCode: ''
+        },
+        loginRules: {
+          username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+          password: [{ required: true, trigger: 'blur', validator: validatePass }]
+        },
+        loading: false,
+        pwdType: 'password',
+        verificationImg: ''
+      }
+    },
+    methods: {
+      createCode() {
+        this.verificationImg = window.urlData.url + '/admin/validate/image?t=' + Date.parse(new Date())
+      },
+      showPwd() {
+        if (this.pwdType === 'password') {
+          this.pwdType = ''
+        } else {
+          this.pwdType = 'password'
+        }
+      },
+      changeVerification() {
+        this.createCode()
+      },
+      handleLogin() {
+        this.$refs.loginForm.validate(valid => {
+          if (valid) {
+            this.loading = true
+            let copyForm = JSON.stringify(this.loginForm)
+            copyForm = JSON.parse(copyForm)
+            copyForm.password = md5(md5(copyForm.password) + 'MVC')
+
+            this.$store.dispatch('Login', copyForm).then(() => {
+              this.loading = false
+              this.$router.push({ path: '/' })
+            }).catch(() => {
+              this.loading = false
+            })
+          } else {
+            this.$message.error('请正确填写表单')
+            return false
+          }
         })
-      })
+      }
     }
   }
-}
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
   @import "src/styles/mixin.scss";
-  $bg:#2d3a4b;
-  $dark_gray:#889aa4;
-  $light_gray:#eee;
+
+  $bg: #2d3a4b;
+  $dark_gray: #889aa4;
+  $light_gray: #eee;
 
   .login-container {
     @include relative;
@@ -175,9 +190,9 @@ export default {
       font-size: 16px;
       color: $dark_gray;
       cursor: pointer;
-      user-select:none;
+      user-select: none;
     }
-    .thirdparty-button{
+    .thirdparty-button {
       position: absolute;
       right: 35px;
       bottom: 28px;
@@ -186,9 +201,9 @@ export default {
       text-align: center;
       cursor: pointer;
       border-radius: 0 3px 3px 0;
-      & img{
+      & img {
         position: relative;
-        top:8px;
+        top: 8px;
       }
     }
   }
