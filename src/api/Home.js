@@ -16,6 +16,7 @@ export function addProject(data) {
   return request({
     url: '/project',
     method: 'post',
+    async: false,
     data
   })
 }

@@ -111,7 +111,11 @@
         })
       },
       showHandler(opt) {
-        this.$store.dispatch().then(() => {}).catch(() => {})
+        this.$store.dispatch('putProHandler', opt).then(() => {
+          this.getProList('pageNum=1&pageSize=10&orderBy=created_at')
+        }).catch((err) => {
+          this.$message.error(err)
+        })
       }
     }
   }

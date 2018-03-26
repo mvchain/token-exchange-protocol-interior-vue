@@ -12,3 +12,28 @@ export function opera(data) {
     method: 'put'
   })
 }
+export function userList(data) {
+  return request({
+    url: '/account?' + data,
+    method: 'get'
+  })
+}
+export function userInfoS(data) {
+  return request({
+    url: `/account/${data}/balance`,
+    method: 'get'
+  })
+}
+export function tokenConfig() {
+  return request({
+    url: '/config',
+    method: 'get'
+  })
+}
+export function modifyTokey(data) {
+  return request({
+    url: '/config',
+    method: 'put',
+    data
+  })
+}
