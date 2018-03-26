@@ -1,12 +1,24 @@
-import { txListHandler, opera } from '@/api/recharge'
+import { txListHandler, opera, userList, userInfoS, tokenConfig, modifyTokey } from '@/api/recharge'
 
 const rechargeWithdraw = {
   state: {
-    txList: {}
+    txList: {},
+    userList: {},
+    userInfo: [],
+    tokenConfig: []
   },
   mutations: {
     SET_TX_LIST: (state, txList) => {
       state.txList = txList
+    },
+    SET_USER_LIST: (state, userList) => {
+      state.userList = userList
+    },
+    SET_USER_INFO: (state, userInfo) => {
+      state.userInfo = userInfo
+    },
+    SET_TOKEN_CONFIG: (state, tokenConfig) => {
+      state.tokenConfig = tokenConfig
     }
   },
   actions: {
@@ -23,6 +35,45 @@ const rechargeWithdraw = {
     operaHandler: ({ commit, state }, payload) => {
       return new Promise((resolve, reject) => {
         opera(payload).then(res => {
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    orderHandler: ({ commit, state }, payload) => {
+      return new Promise((resolve, reject) => {
+        userList(payload).then(res => {
+          commit('SET_USER_LIST', res.data)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    infoHandler: ({ commit, state }, payload) => {
+      return new Promise((resolve, reject) => {
+        userInfoS(payload).then(res => {
+          commit('SET_USER_INFO', res.data)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    tokenConfigHandler: ({ commit, state }) => {
+      return new Promise((resolve, reject) => {
+        tokenConfig().then(res => {
+          commit('SET_TOKEN_CONFIG', res.data)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    modifyTokenConfigHandler: ({ commit, state }, payload) => {
+      return new Promise((resolve, reject) => {
+        modifyTokey(payload).then(res => {
           resolve()
         }).catch(error => {
           reject(error)

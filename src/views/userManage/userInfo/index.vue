@@ -1,6 +1,19 @@
 <template>
-  <div>
-    用户详情
+  <div class="user-info-con">
+    <el-table
+      :data="userInfo"
+      style="width: 100%">
+      <el-table-column
+        prop="id"
+        label="币种"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="balance"
+        label="余额"
+      >
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
@@ -13,13 +26,20 @@
       }
     },
     mounted() {
+      this.getUserInfo(this.$route.query.id)
     },
     computed: {
       ...mapGetters({
-        configData: 'configData'
+        userInfo: 'userInfo'
       })
     },
     methods: {
+      getUserInfo(str) {
+        this.$store.dispatch('infoHandler', str).then(() => {
+        }).catch((err) => {
+          this.$message.error(err)
+        })
+      }
     }
   }
 </script>

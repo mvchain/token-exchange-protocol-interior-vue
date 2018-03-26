@@ -7,6 +7,9 @@ const getters = {
   projectInfo: state => state.project.projectInfo,
   orderList: state => state.project.orderList,
   salesList: state => state.project.salesList,
-  txList: state => state.rechargeWithdraw.txList
+  txList: state => state.rechargeWithdraw.txList,
+  userList: state => state.rechargeWithdraw.userList,
+  userInfo: state => state.rechargeWithdraw.userInfo,
+  tokenConfig: state => state.rechargeWithdraw.tokenConfig
 }
 export default getters
