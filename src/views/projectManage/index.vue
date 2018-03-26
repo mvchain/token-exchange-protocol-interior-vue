@@ -71,7 +71,7 @@
       }
     },
     mounted() {
-      this.getProList('pageNum=1&pageSize=10&orderBy=created_at')
+      this.getProList('pageNum=1&pageSize=10&orderBy=created_at desc')
     },
     computed: {
       ...mapGetters({
