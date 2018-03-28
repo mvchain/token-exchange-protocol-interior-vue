@@ -43,13 +43,21 @@
       </el-table-column>
       <el-table-column
         prop="number"
-        label="提币金额"
+        label="金额"
       >
       </el-table-column>
       <el-table-column
         prop="toAddress"
-        label="提币地址"
+        label="地址"
+        width="400"
       >
+      </el-table-column>
+      <el-table-column
+        label="交易哈希"
+      >
+        <template slot-scope="scope">
+          <span class="to-etherscan" @click="toEtherscan(scope.row.hash)">{{scope.row.hash}}</span>
+        </template>
       </el-table-column>
       <el-table-column
         label="状态"
@@ -64,13 +72,13 @@
         label="操作"
         width="200">
         <template slot-scope="scope">
-          <el-dropdown>
+          <el-dropdown v-show="scope.row.type == 1 && scope.row.status == 0">
             <span class="el-dropdown-link">
               操作<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="operaRequest({id: scope.row.id, status: 2})">同意</el-dropdown-item>
-              <el-dropdown-item @click.native="operaRequest({id: scope.row.id, status: 9})">拒绝</el-dropdown-item>
+            <el-dropdown-menu slot="dropdown" >
+              <el-dropdown-item  @click.native="operaRequest({id: scope.row.id, status: 1})">同意</el-dropdown-item>
+              <el-dropdown-item  @click.native="operaRequest({id: scope.row.id, status: 9})">拒绝</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -141,6 +149,9 @@
       })
     },
     methods: {
+      toEtherscan(v) {
+        window.location.href = `https://etherscan.io/search?q=${v}`
+      },
       handleCurrentChange(v) {
         this.pageNum = v
         this.getTXList(`pageNum=${this.pageNum}&pageSize=10&orderBy=created_at&type=${this.coinType}&status=${this.orderStatus}&orderId=${this.orderId}`)

@@ -7,12 +7,6 @@
       <el-form-item label="币种名称" prop="tokenName">
         <el-input v-model="ruleForm.tokenName"></el-input>
       </el-form-item>
-      <el-form-item label="合约地址" prop="contractAddress">
-        <el-input v-model="ruleForm.contractAddress"></el-input>
-      </el-form-item>
-      <el-form-item label="位数" prop="decimals">
-        <el-input v-model="ruleForm.decimals"></el-input>
-      </el-form-item>
       <el-form-item label="ETH购买总数" prop="ethNumber">
         <el-input v-model="ruleForm.ethNumber"></el-input>
       </el-form-item>
@@ -72,34 +66,26 @@
     data() {
       return {
         ruleForm: {
-          contractAddress: 'xxxxxxxxxxxxxxxxx',
-          decimals: '20',
-          description: '建国以来第一只成精的妖物',
-          ethNumber: '1200',
+          description: '',
+          ethNumber: '',
           leaderImageAddress: '',
           leaderImageName: '',
           leaderName: '',
-          position: '大统领',
+          position: '',
           projectCoverAddress: '',
           projectCoverName: '',
           projectImageAddress: '',
           projectImageName: '',
-          ratio: '100',
+          ratio: '',
           startTime: '',
-          homepage: 'www.bilibili.com',
+          homepage: '',
           stopTime: '',
-          title: '有妖币',
-          tokenName: 'HYC',
+          title: '',
+          tokenName: '',
           whitePaperAddress: '',
           whitePaperName: ''
         },
         rules: {
-          contractAddress: [
-            { required: true, message: '请输入合约地址', trigger: 'blur' }
-          ],
-          decimals: [
-            { required: true, message: '请输入合约位数', trigger: 'blur' }
-          ],
           description: [
             { required: true, message: '请输入创始人介绍', trigger: 'blur' },
             { max: 500, message: '字数请少于500字', trigger: 'blur' }
@@ -174,11 +160,7 @@
             this[name].stopTime = Date.parse(this[name].startTime[1])
             this[name].startTime = Date.parse(this[name].startTime[0])
             this.$store.dispatch('getAddProject', this[name]).then(() => {
-              this.$refs[name].resetFields()
-              this.intList = []
-              this.fileList = []
-              this.homeList = []
-              this.avoList = []
+              this.$router.back()
               this.$message.success('创建成功')
             }).catch((err) => {
               this.$message.error(err)

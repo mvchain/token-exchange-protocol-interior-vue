@@ -50,18 +50,21 @@ export const constantRouterMap = [
       {
         path: 'projectData',
         name: 'projectData',
+        hidden: true,
         component: _import('projectManage/projectData/index'),
         meta: { title: '项目数据', icon: 'example' }
       },
       {
         path: 'projectEdit',
         name: 'projectEdit',
+        hidden: true,
         component: _import('projectManage/projectEdit/index'),
         meta: { title: '项目编辑', icon: 'example' }
       },
       {
         path: 'addProject',
         name: 'addProject',
+        hidden: true,
         component: _import('projectManage/addProject/index'),
         meta: { title: '新建项目', icon: 'example' }
       }
@@ -83,6 +86,7 @@ export const constantRouterMap = [
       {
         path: 'userInfo',
         name: 'userInfo',
+        hidden: true,
         component: _import('userManage/userInfo/index'),
         meta: { title: '用户详情', icon: 'table' }
       }

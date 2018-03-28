@@ -57,3 +57,15 @@ export function putShow(data) {
     method: 'put'
   })
 }
+export function sendToken(opt) {
+  return request({
+    url: `/project/${opt.id}/sendToken/${opt.send}`,
+    method: 'put'
+  })
+}
+export function retireToken(opt) {
+  return request({
+    url: `/project/${opt.id}/retire/${opt.retire}`,
+    method: 'put'
+  })
+}

@@ -3,7 +3,7 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
   state: {
-    token: getToken(),
+    token: getToken()
   },
 
   mutations: {
@@ -41,24 +41,23 @@ const user = {
     // 前端 登出
     FedLogOut({ commit }) {
       return new Promise(resolve => {
-        commit('SET_TOKEN', '')
+        window.sessionStorage.clear()
         removeToken()
         resolve()
       })
     },
     getReferToken: () => {
-      const rToken = getToken();
-      let user = JSON.parse(window.sessionStorage.getItem('user'));
+      const rToken = JSON.parse(window.sessionStorage.getItem('user')).refreshToken
+      setToken(rToken)
       return new Promise((resolve, reject) => {
-        refreshToken(rToken).then(res => {
-          window.sessionStorage.setItem('user', JSON.stringify({refreshToken: res.data, username: user.username}));
-          setToken(res.data);
-          resolve();
+        refreshToken().then(res => {
+          setToken(res.data)
+          resolve()
         }).catch(error => {
-          reject(error);
-        });
-      });
-    },
+          reject(error)
+        })
+      })
+    }
   }
 }
 

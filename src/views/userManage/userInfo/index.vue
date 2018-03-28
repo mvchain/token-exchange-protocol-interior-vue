@@ -4,7 +4,7 @@
       :data="userInfo"
       style="width: 100%">
       <el-table-column
-        prop="id"
+        prop="tokenName"
         label="币种"
       >
       </el-table-column>

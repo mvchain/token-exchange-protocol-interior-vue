@@ -27,12 +27,12 @@
     data() {
       return {
         imgName: '',
-        imgBase: '',
+        imgBase: window.urlData.ossObj.host,
         imgObj: {
           name: '',
           key: '',
           policy: '',
-          OSSAccessKeyId: '',
+          OSSAccessKeyId: window.urlData.ossObj.accessid,
           success_action_status: '200',
           signature: ''
         }
@@ -47,10 +47,8 @@
     methods: {
       updateImg() {
         this.$store.dispatch('getOssObj').then((res) => {
-          this.imgObj.OSSAccessKeyId = this.ossObj.accessid
           this.imgObj.policy = this.ossObj.policy
           this.imgObj.signature = this.ossObj.signature
-          this.imgBase = this.ossObj.host
         }).catch((err) => {
           this.$message.error(err)
         })
@@ -115,10 +113,10 @@
         const isLt2M = file.size / 1024 / 1024 < this.limit
         this.imgObj.key = this.calculate_object_name(file.name)
         if (!isJPG) {
-          this.$message.error(`上传头像图片只支持${this.payload}格式图片!`)
+          this.$message.error(`只支持${this.payload}格式!`)
         }
         if (!isLt2M) {
-          this.$message.error(`上传头像图片大小不能超过 ${this.limit}MB!`)
+          this.$message.error(`上传文件大小不能超过 ${this.limit}MB!`)
         }
         if (this.imgName === file.name) {
           this.$message.error('请勿重复上传')

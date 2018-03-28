@@ -37,3 +37,11 @@ export function modifyTokey(data) {
     data
   })
 }
+export function addCoin(data) {
+  return request({
+    url: '/config',
+    method: 'post',
+    data
+  })
+}
+

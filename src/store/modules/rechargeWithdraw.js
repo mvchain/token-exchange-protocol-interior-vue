@@ -1,4 +1,4 @@
-import { txListHandler, opera, userList, userInfoS, tokenConfig, modifyTokey } from '@/api/recharge'
+import { txListHandler, opera, userList, userInfoS, tokenConfig, modifyTokey, addCoin } from '@/api/recharge'
 
 const rechargeWithdraw = {
   state: {
@@ -74,6 +74,15 @@ const rechargeWithdraw = {
     modifyTokenConfigHandler: ({ commit, state }, payload) => {
       return new Promise((resolve, reject) => {
         modifyTokey(payload).then(res => {
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    addCoinHandler: ({ commit, state }, payload) => {
+      return new Promise((resolve, reject) => {
+        addCoin(payload).then(res => {
           resolve()
         }).catch(error => {
           reject(error)

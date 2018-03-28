@@ -1,8 +1,26 @@
 .setting-con{
   padding:30px;
-  .setting-grid{
-    padding:15px 0;
-    line-height: 30px;
-    border-bottom:1px solid #ddd;
+
+  .label-switch{
+    position: relative;
+    top:3px;
+  }
+  .setting-grid-row{
+    display: flex;
+    .setting-left{
+      width:200px;
+      display: flex;
+      margin-right:15px;
+      align-items: center;
+      & button{
+        margin-right:20px;
+      }
+    }
+    .setting-grid{
+      flex:1;
+      padding:15px 0;
+      line-height: 30px;
+      border-bottom:1px solid #ddd;
+    }
   }
 }

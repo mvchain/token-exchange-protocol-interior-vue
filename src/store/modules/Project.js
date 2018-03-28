@@ -1,4 +1,4 @@
-import { projectList, ossObjHandler, addProject, proInfo, orderHandler, salesHandler, deletePro, putShow, putProject } from '@/api/Home'
+import { projectList, ossObjHandler, addProject, proInfo, orderHandler, salesHandler, deletePro, putShow, putProject, sendToken, retireToken } from '@/api/Home'
 
 const Project = {
   state: {
@@ -40,7 +40,7 @@ const Project = {
       return new Promise((resolve, reject) => {
         ossObjHandler().then(res => {
           commit('SET_OSSOBJ', res.data)
-          resolve()
+          resolve(res.data)
         }).catch(error => {
           reject(error)
         })
@@ -106,6 +106,24 @@ const Project = {
     putProject: ({ commit, state }, payload) => {
       return new Promise((resolve, reject) => {
         putProject(payload).then(res => {
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    sendTokenHandler: ({ commit, state }, payload) => {
+      return new Promise((resolve, reject) => {
+        sendToken(payload).then(res => {
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    retireHandler: ({ commit, state }, payload) => {
+      return new Promise((resolve, reject) => {
+        retireToken(payload).then(res => {
           resolve()
         }).catch(error => {
           reject(error)

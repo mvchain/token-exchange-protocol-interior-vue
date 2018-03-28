@@ -7,12 +7,6 @@
       <el-form-item label="币种名称" prop="tokenName">
         <el-input v-model="ruleForm.tokenName"></el-input>
       </el-form-item>
-      <el-form-item label="合约地址" prop="contractAddress">
-        <el-input v-model="ruleForm.contractAddress"></el-input>
-      </el-form-item>
-      <el-form-item label="位数" prop="decimals">
-        <el-input v-model="ruleForm.decimals"></el-input>
-      </el-form-item>
       <el-form-item label="ETH购买总数" prop="ethNumber">
         <el-input v-model="ruleForm.ethNumber"></el-input>
       </el-form-item>
@@ -82,8 +76,6 @@
     data() {
       return {
         ruleForm: {
-          contractAddress: '',
-          decimals: '',
           description: '',
           ethNumber: '',
           leaderImageAddress: '',
@@ -104,12 +96,6 @@
           whitePaperName: ''
         },
         rules: {
-          contractAddress: [
-            {required: true, message: '请输入合约地址', trigger: 'blur'}
-          ],
-          decimals: [
-            {required: true, message: '请输入合约位数', trigger: 'blur'}
-          ],
           description: [
             {required: true, message: '请输入创始人介绍', trigger: 'blur'},
             {max: 500, message: '字数请少于500字', trigger: 'blur'}
@@ -200,7 +186,6 @@
         this.$store.dispatch('getProjectInfo', id).then(() => {
           const str = JSON.stringify(this.projectInfo)
           this.ruleForm = JSON.parse(str)
-          this.ruleForm.decimals = String(this.ruleForm.decimals)
           this.ruleForm.ethNumber = String(this.ruleForm.ethNumber)
           this.ruleForm.ratio = String(this.ruleForm.ratio)
           this.fileList[0] = {
