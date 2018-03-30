@@ -23,21 +23,21 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item label="白皮书" prop="whitePaperAddress">
-        <pro-oss @set-img-url="getImg" :fileList="fileList" :payload="'pdf'" :limit="10" :type="'white'"></pro-oss>
+        <pro-oss @set-img-url="getImg"  :payload="'pdf'" :limit="10" :type="'white'"></pro-oss>
       </el-form-item>
       <el-form-item label="官网" prop="homepage">
         <el-input v-model="ruleForm.homepage"></el-input>
       </el-form-item>
       <el-form-item label="项目介绍" prop="projectImageAddress">
-        <pro-oss @set-img-url="getImg" :fileList="intList" :payload="'image/jpeg/image/png/image/jpg'" :limit="10"
+        <pro-oss @set-img-url="getImg"  :payload="'image/jpeg/image/png/image/jpg'" :limit="10"
                  :type="'introduction'"></pro-oss>
       </el-form-item>
       <el-form-item label="项目封面" prop="projectCoverAddress">
-        <pro-oss @set-img-url="getImg" :fileList="homeList" :payload="'image/jpeg/image/png/image/jpg'" :limit="1"
+        <pro-oss @set-img-url="getImg"  :payload="'image/jpeg/image/png/image/jpg'" :limit="1"
                  :type="'cover'"></pro-oss>
       </el-form-item>
       <el-form-item label="创始人头像" prop="leaderImageAddress">
-        <pro-oss @set-img-url="getImg" :fileList="avoList" :payload="'image/jpeg/image/png/image/jpg'" :limit="1"
+        <pro-oss @set-img-url="getImg"  :payload="'image/jpeg/image/png/image/jpg'" :limit="1"
                  :type="'leader'"></pro-oss>
       </el-form-item>
       <el-form-item label="创始人名字" prop="leaderName">
@@ -139,14 +139,10 @@
           whitePaperAddress: [
             {required: true, message: '请上传白皮书'}
           ]
-        },
-        fileList: [],
-        intList: [],
-        avoList: [],
-        homeList: []
+        }
       }
     },
-    mounted() {
+    created() {
       this.getInfo(this.$route.query.id)
     },
     methods: {
@@ -173,6 +169,7 @@
             this.$store.dispatch('putProject', this[name]).then(() => {
               this.$router.back()
               this.$message.success('修改成功')
+              window.sessionStorage.removeItem('fileList')
             }).catch((err) => {
               this.$message.error(err)
             })
@@ -185,25 +182,32 @@
       getInfo(id) {
         this.$store.dispatch('getProjectInfo', id).then(() => {
           const str = JSON.stringify(this.projectInfo)
+          const st = new Date(this.projectInfo.startTime)
+          const ot = new Date(this.projectInfo.stopTime)
+
           this.ruleForm = JSON.parse(str)
           this.ruleForm.ethNumber = String(this.ruleForm.ethNumber)
           this.ruleForm.ratio = String(this.ruleForm.ratio)
-          this.fileList[0] = {
+          this.ruleForm.startTime = [
+            st, ot
+          ]
+          this.fileList['white'] = {
             name: this.ruleForm.whitePaperName,
             url: this.ruleForm.whitePaperAddress
           }
-          this.intList[0] = {
+          this.fileList['introduction'] = {
             name: this.ruleForm.projectImageName,
             url: this.ruleForm.projectImageAddress
           }
-          this.avoList[0] = {
+          this.fileList['leader'] = {
             name: this.ruleForm.leaderImageName,
             url: this.ruleForm.leaderImageAddress
           }
-          this.homeList[0] = {
+          this.fileList['cover'] = {
             name: this.ruleForm.projectCoverName,
             url: this.ruleForm.projectCoverAddress
           }
+          window.sessionStorage.setItem('fileList', JSON.stringify(this.fileList))
         }).catch((err) => {
           this.$message.error(err)
         })

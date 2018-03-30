@@ -66,7 +66,7 @@
       })
     },
     mounted() {
-      this.getList('pageNum=1&pageSize=11&orderBy=created_at')
+      this.getList('pageNum=1&pageSize=11&orderBy=created_at desc')
     },
     methods: {
       operaRequest(k) {
@@ -74,7 +74,7 @@
       },
       handleCurrentChange(v) {
         this.pageNum = v
-        this.getList(`pageNum=${v}&pageSize=10&orderBy=created_at`)
+        this.getList(`pageNum=${v}&pageSize=10&orderBy=created_at desc`)
       },
       getList(str) {
         this.$store.dispatch('orderHandler', str).then(() => {

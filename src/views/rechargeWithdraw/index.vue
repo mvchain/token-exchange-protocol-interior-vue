@@ -141,7 +141,7 @@
       }
     },
     mounted() {
-      this.getTXList('pageNum=1&pageSize=10&orderBy=created_at&type=0')
+      this.getTXList('pageNum=1&pageSize=10&orderBy=created_at desc&type=0')
     },
     computed: {
       ...mapGetters({
@@ -154,7 +154,7 @@
       },
       handleCurrentChange(v) {
         this.pageNum = v
-        this.getTXList(`pageNum=${this.pageNum}&pageSize=10&orderBy=created_at&type=${this.coinType}&status=${this.orderStatus}&orderId=${this.orderId}`)
+        this.getTXList(`pageNum=${this.pageNum}&pageSize=10&orderBy=created_at desc&type=${this.coinType}&status=${this.orderStatus}&orderId=${this.orderId}`)
       },
       getTXList(str) {
         this.$store.dispatch('getTXList', str).then(() => {
@@ -165,13 +165,13 @@
       switchHandler(v) {
         this.coinType = v
         this.orderStatus = ''
-        this.getTXList(`pageNum=${this.pageNum}&pageSize=10&orderBy=created_at&type=${this.coinType}&status=${this.orderStatus}&orderId=${this.orderId}`)
+        this.getTXList(`pageNum=${this.pageNum}&pageSize=10&orderBy=created_at desc&type=${this.coinType}&status=${this.orderStatus}&orderId=${this.orderId}`)
       },
       changeStatus(v) {
-        this.getTXList(`pageNum=${this.pageNum}&pageSize=10&orderBy=created_at&type=${this.coinType}&status=${this.orderStatus}&orderId=${this.orderId}`)
+        this.getTXList(`pageNum=${this.pageNum}&pageSize=10&orderBy=created_at desc&type=${this.coinType}&status=${this.orderStatus}&orderId=${this.orderId}`)
       },
       searchHandler() {
-        this.getTXList(`pageNum=${this.pageNum}&pageSize=10&orderBy=created_at&type=${this.coinType}&status=${this.orderStatus}&orderId=${this.orderId}`)
+        this.getTXList(`pageNum=${this.pageNum}&pageSize=10&orderBy=created_at desc&type=${this.coinType}&status=${this.orderStatus}&orderId=${this.orderId}`)
       },
       operaRequest(opt) {
         this.$confirm('是否继续操作', '提示', {
@@ -180,7 +180,7 @@
           type: 'warning'
         }).then(() => {
           this.$store.dispatch('operaHandler', opt).then(() => {
-            this.getTXList(`pageNum=${this.pageNum}&pageSize=10&orderBy=created_at&type=${this.coinType}&status=${this.orderStatus}&orderId=${this.orderId}`)
+            this.getTXList(`pageNum=${this.pageNum}&pageSize=10&orderBy=created_at desc&type=${this.coinType}&status=${this.orderStatus}&orderId=${this.orderId}`)
           }).catch((err) => {
             this.$message.error(err)
           })

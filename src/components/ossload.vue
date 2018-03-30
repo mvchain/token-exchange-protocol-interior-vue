@@ -3,13 +3,12 @@
   <el-upload
     :action="imgBase"
     :data="imgObj"
-    :limit="limit"
+    :limit="1"
     :on-success="handleAvatarSuccess"
     :on-error="handleAvatarError"
     :before-upload="beforeAvatarUpload"
     :file-list="fileList"
     list-type="picture">
-    <span>{{fileList[0]}}</span>
     <el-button size="small" type="primary" @click.native="updateImg">点击上传</el-button>
     <div slot="tip" class="el-upload__tip">只能上传{{payload}}文件，且不超过{{limit}}M</div>
   </el-upload>
@@ -20,13 +19,14 @@
     name: 'ossload',
     props: {
       limit: Number,
-      fileList: Array,
       type: String,
-      payload: String
+      payload: String,
+      proObj: Object
     },
     data() {
       return {
         imgName: '',
+        fileList: [],
         imgBase: window.urlData.ossObj.host,
         imgObj: {
           name: '',
@@ -43,7 +43,15 @@
         ossObj: 'ossObj'
       })
     },
-
+    destroyed() {
+      window.sessionStorage.removeItem('fileList')
+    },
+    created() {
+      if (this.$route.query.id) {
+        const item = JSON.parse(window.sessionStorage.getItem('fileList'))
+        this.fileList[0] = item[this.type]
+      }
+    },
     methods: {
       updateImg() {
         this.$store.dispatch('getOssObj').then((res) => {
@@ -118,12 +126,7 @@
         if (!isLt2M) {
           this.$message.error(`上传文件大小不能超过 ${this.limit}MB!`)
         }
-        if (this.imgName === file.name) {
-          this.$message.error('请勿重复上传')
-          return false
-        } else {
-          this.imgName = file.name
-        }
+        this.imgName = file.name
         return isJPG && isLt2M
       },
       handleAvatarError(err) {

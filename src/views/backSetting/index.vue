@@ -24,7 +24,7 @@
             </el-col>
             <el-col style="margin-bottom:20px;" :span="6">
               <div class="bg-purple">
-                <span class="label-switch">充提:</span>
+                <span class="label-switch">充值:</span>
                 <el-switch
                   v-model="v.rechargeStatus"
                   :active-value="1"

@@ -25,7 +25,7 @@
           width="200">
           <template slot-scope="scope">
             <router-link :to="{path: 'projectData', query: {id: scope.row.id}}" class="manage-btn">项目数据</router-link>
-            <router-link :to="{path: 'projectEdit', query: {id: scope.row.id}}" class="manage-btn">项目编辑</router-link>
+            <el-button v-loading="toFlag && toId === scope.row.id"  element-loading-text="正在跳转" type="text" @click="toEdit(scope.row.id)" class="manage-btn">项目编辑</el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -67,7 +67,9 @@
     data() {
       return {
         listLoading: false,
-        pageNum: 1
+        pageNum: 1,
+        toFlag: false,
+        toId: ''
       }
     },
     mounted() {
@@ -75,7 +77,8 @@
     },
     computed: {
       ...mapGetters({
-        projectList: 'projectList'
+        projectList: 'projectList',
+        projectInfo: 'projectInfo'
       })
     },
     methods: {
@@ -89,6 +92,37 @@
           this.listLoading = false
         }).catch((err) => {
           this.listLoading = false
+          this.$message.error(err)
+        })
+      },
+      toEdit(id) {
+        this.toFlag = true
+        this.toId = id
+        this.$store.dispatch('getProjectInfo', id).then(() => {
+          const str = JSON.stringify(this.projectInfo)
+          const from1 = JSON.parse(str)
+          const fileList = {}
+          fileList['white'] = {
+            name: from1.whitePaperName,
+            url: from1.whitePaperAddress
+          }
+          fileList['introduction'] = {
+            name: from1.projectImageName,
+            url: from1.projectImageAddress
+          }
+          fileList['leader'] = {
+            name: from1.leaderImageName,
+            url: from1.leaderImageAddress
+          }
+          fileList['cover'] = {
+            name: from1.projectCoverName,
+            url: from1.projectCoverAddress
+          }
+          this.toFlag = false
+          window.sessionStorage.setItem('fileList', JSON.stringify(fileList))
+          this.$router.push({path: 'projectEdit', query: { id: id }})
+        }).catch((err) => {
+          this.toFlag = false
           this.$message.error(err)
         })
       },
