@@ -119,7 +119,7 @@
         })
       },
       subModify(idx) {
-        this.$store.dispatch(this.tokenConfig[idx].id ? 'modifyTokenConfigHandler' : 'addCoinHandler', this.tokenConfig[idx]).then(() => {
+        this.$store.dispatch(!isNaN(this.tokenConfig[idx].id) ? 'modifyTokenConfigHandler' : 'addCoinHandler', this.tokenConfig[idx]).then(() => {
           this.$message.success('修改成功')
         }).catch((err) => {
           this.$message.error(err)

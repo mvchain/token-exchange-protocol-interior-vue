@@ -40,7 +40,7 @@
                 <el-dropdown-item v-show="scope.row.needShow === 0" @click.native="showHandler({id: scope.row.id, show: 1})">展示开启</el-dropdown-item>
                 <el-dropdown-item v-show="scope.row.needShow !== 0" @click.native="showHandler({id: scope.row.id, show: 0})">展示关闭</el-dropdown-item>
                 <el-dropdown-item @click.native="sendTokenFun({id: scope.row.id, send: 1})" :disabled="!(scope.row.status === 2 && scope.row.sendToken === 0)">项目发币</el-dropdown-item>
-                <el-dropdown-item @click.native="retireFun({id: scope.row.id, retire: 1})" :disabled="!(scope.row.status === 2 && scope.row.retire === 0)">项目清退</el-dropdown-item>
+                <el-dropdown-item @click.native="retireFun({id: scope.row.id, retire: 1})" :disabled="!(scope.row.status === 2 && scope.row.retire === 0 && scope.row.tokenWithdrawStatus === 0)">项目清退</el-dropdown-item>
                 <el-dropdown-item :disabled="!(scope.row.status === 0 || scope.row.sendToken === 1)" @click.native="deleteHandler(scope.row.id)">删除项目</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -152,20 +152,32 @@
         })
       },
       sendTokenFun(opt) {
-        this.$store.dispatch('sendTokenHandler', opt).then(() => {
-          this.$message.success('发币成功')
-          this.getProList('pageNum=1&pageSize=10&orderBy=created_at desc')
-        }).catch((err) => {
-          this.$message.error(err)
-        })
+        this.$confirm('是否确认发币', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$store.dispatch('sendTokenHandler', opt).then(() => {
+            this.$message.success('发币成功')
+            this.getProList('pageNum=1&pageSize=10&orderBy=created_at desc')
+          }).catch((err) => {
+            this.$message.error(err)
+          })
+        }).catch(() => {})
       },
       retireFun(opt) {
-        this.$store.dispatch('retireHandler', opt).then(() => {
-          this.$message.success('清退成功')
-          this.getProList('pageNum=1&pageSize=10&orderBy=created_at desc')
-        }).catch((err) => {
-          this.$message.error(err)
-        })
+        this.$confirm('是否确认清退', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$store.dispatch('retireHandler', opt).then(() => {
+            this.$message.success('清退成功')
+            this.getProList('pageNum=1&pageSize=10&orderBy=created_at desc')
+          }).catch((err) => {
+            this.$message.error(err)
+          })
+        }).catch(() => {})
       }
     }
   }

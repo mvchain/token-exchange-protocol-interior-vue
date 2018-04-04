@@ -52,15 +52,22 @@
           label="项目状态"
         >
           <template slot-scope="scope">
-            <span>{{scope.row.status === 0 ? '等待' : scope.row.status === 9 ? '取消' : scope.row.status === 2 ? '已发币' : '已清退' }}</span>
+             <span>{{scope.row.status === 2 ? '成功' : scope.row.status === 1 ? '正在进行' : '失败'}}</span>
           </template>
         </el-table-column>
         <el-table-column
           prop="orderStatus"
-          label="是否发币"
+          label="订单状态"
         >
           <template slot-scope="scope">
-            <span>{{scope.row.orderStatus === 0 ? '否' : '是' }}</span>
+            <span>{{scope.row | statusFilter}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="操作"
+        >
+          <template slot-scope="scope">
+            <el-button @click="cancelOrder(scope.row.id)">取消订单</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -120,6 +127,20 @@
         }).catch((err) => {
           this.$message.error(err)
         })
+      },
+      cancelOrder(idx) {
+        this.$confirm('是否取消该订单', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$store.dispatch('cancelOrderHandler', idx).then(() => {
+            this.$message.success('取消成功')
+            this.getOrderList(`projectId=${this.$route.query.id}&orderBy=created_at`)
+          }).catch((err) => {
+            this.$message.error(err)
+          })
+        }).catch()
       }
     }
   }

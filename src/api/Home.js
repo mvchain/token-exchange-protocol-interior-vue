@@ -69,3 +69,9 @@ export function retireToken(opt) {
     method: 'put'
   })
 }
+export function cancelOrder(id) {
+  return request({
+    url: `/order/${id}/orderStatus/9`,
+    method: 'put'
+  })
+}
