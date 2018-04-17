@@ -66,8 +66,8 @@
       }
       return {
         loginForm: {
-          username: 'mvc-admin',
-          password: 'admin',
+          username: '',
+          password: '',
           imageCode: ''
         },
         loginRules: {
