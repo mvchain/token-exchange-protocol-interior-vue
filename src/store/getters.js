@@ -10,6 +10,7 @@ const getters = {
   txList: state => state.rechargeWithdraw.txList,
   userList: state => state.rechargeWithdraw.userList,
   userInfo: state => state.rechargeWithdraw.userInfo,
-  tokenConfig: state => state.rechargeWithdraw.tokenConfig
+  tokenConfig: state => state.rechargeWithdraw.tokenConfig,
+  addressCount: state => state.rechargeWithdraw.addressCount
 }
 export default getters

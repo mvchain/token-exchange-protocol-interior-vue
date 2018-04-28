@@ -1,5 +1,17 @@
 <template>
   <div class="user-list">
+    <div>
+      <el-upload
+        style="margin-bottom:15px"
+        :action="urlData + '/transaction/import/account'"
+        :limit="1"
+        :headers="token"
+        :on-success="handleAvatarSuccess"
+        list-type="picture">
+        <el-button type="primary" >导入地址</el-button>
+      </el-upload>
+      <span >待分配地址剩余：{{addressCount}}</span>
+    </div>
     <el-table
       :data="userList.list"
       style="width: 100%">
@@ -14,8 +26,8 @@
       >
       </el-table-column>
       <el-table-column
-        prop="phone"
-        label="手机号"
+        prop="addressEth"
+        label="地址"
       >
       </el-table-column>
       <el-table-column
@@ -51,24 +63,34 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
-
+  import { mapGetters } from 'vuex'
+  import { getToken } from '@/utils/auth'
   export default {
     name: 'basicInfo',
     data() {
       return {
-        pageNum: 1
+        pageNum: 1,
+        urlData: window.urlData.url,
+        token: {
+          Authorization: getToken()
+        }
       }
     },
     computed: {
       ...mapGetters({
-        userList: 'userList'
+        userList: 'userList',
+        addressCount: 'addressCount'
       })
     },
     mounted() {
       this.getList('pageNum=1&pageSize=11&orderBy=created_at desc')
+      this.$store.dispatch('getAddressCount')
     },
     methods: {
+      handleAvatarSuccess(res, file) {
+        this.$store.dispatch('getAddressCount')
+        this.$message.success('导入成功')
+      },
       operaRequest(k) {
         this.$router.push({ path: 'userInfo', query: { id: k }})
       },

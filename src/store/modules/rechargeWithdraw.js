@@ -1,11 +1,12 @@
-import { txListHandler, opera, userList, userInfoS, tokenConfig, modifyTokey, addCoin } from '@/api/recharge'
+import { txListHandler, opera, userList, userInfoS, tokenConfig, modifyTokey, addCoin, getAddress, down1, down2, down3 } from '@/api/recharge'
 
 const rechargeWithdraw = {
   state: {
     txList: {},
     userList: {},
     userInfo: [],
-    tokenConfig: []
+    tokenConfig: [],
+    addressCount: ''
   },
   mutations: {
     SET_TX_LIST: (state, txList) => {
@@ -19,9 +20,49 @@ const rechargeWithdraw = {
     },
     SET_TOKEN_CONFIG: (state, tokenConfig) => {
       state.tokenConfig = tokenConfig
+    },
+    SET_ADDRESS_COUNT: (state, addressCount) => {
+      state.addressCount = addressCount
     }
   },
   actions: {
+    down1Handler: ({ commit, state }) => {
+      return new Promise((resolve, reject) => {
+        down1().then(res => {
+          resolve(res)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    down2Handler: ({ commit, state }) => {
+      return new Promise((resolve, reject) => {
+        down2().then(res => {
+          resolve(res)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    down3Handler: ({ commit, state }) => {
+      return new Promise((resolve, reject) => {
+        down3().then(res => {
+          resolve(res)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    getAddressCount: ({ commit, state }, payload) => {
+      return new Promise((resolve, reject) => {
+        getAddress(payload).then(res => {
+          commit('SET_ADDRESS_COUNT', res.data)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
     getTXList: ({ commit, state }, payload) => {
       return new Promise((resolve, reject) => {
         txListHandler(payload).then(res => {

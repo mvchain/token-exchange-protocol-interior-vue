@@ -28,6 +28,11 @@ service.interceptors.response.use(
      */
 
     const res = response.data
+    if ((response.request.responseURL.indexOf('/transaction/collect/json') !== -1) ||
+      (response.request.responseURL.indexOf('/transaction/transaction/json') !== -1)||
+      (response.request.responseURL.indexOf('/transaction/all/json') !== -1)) {
+      return res
+    }
     if (res.status !== 200) {
       Message({
         message: res.data,

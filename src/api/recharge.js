@@ -44,4 +44,27 @@ export function addCoin(data) {
     data
   })
 }
-
+export function getAddress() {
+  return request({
+    url: '/transaction/account/size',
+    method: 'get'
+  })
+}
+export function down1() {
+  return request({
+    url: '/transaction/collect/json',
+    method: 'get'
+  })
+}
+export function down2() {
+  return request({
+    url: '/transaction/transaction/json',
+    method: 'get'
+  })
+}
+export function down3() {
+  return request({
+    url: '/transaction/all/json',
+    method: 'get'
+  })
+}

@@ -4,6 +4,18 @@
       <el-col :span="12">
         <el-button @click="switchHandler(0)" :type="coinType === 0 ? 'primary' : ''">充值记录</el-button>
         <el-button @click="switchHandler(1)" :type="coinType === 1 ? 'primary' : ''">提币记录</el-button>
+        <el-button @click="downData(1)">充值导出</el-button>
+        <el-button @click="downData(2)">提币导出</el-button>
+        <el-button @click="downData(3)">全部导出</el-button>
+        <el-upload
+          style="margin-top:15px"
+          :action="urlData + '/transaction/import/transaction'"
+          :limit="1"
+          :headers="token"
+          :on-success="handleAvatarSuccess"
+          list-type="picture">
+          <el-button type="primary" >导入地址</el-button>
+        </el-upload>
       </el-col>
       <el-col :span="6">
         <el-select v-model="orderStatus"  @change="changeStatus" placeholder="请选择">
@@ -97,13 +109,17 @@
 
 <script>
   import { mapGetters } from 'vuex'
-
+  import { getToken } from '@/utils/auth'
   export default {
     name: 'rechargeWithdraw',
     data() {
       return {
         pageNum: 1,
         coinType: 0,
+        urlData: window.urlData.url,
+        token: {
+          Authorization: getToken()
+        },
         orderId: '',
         orderStatus: '',
         options: [
@@ -149,6 +165,24 @@
       })
     },
     methods: {
+      handleAvatarSuccess(res, file) {
+        this.$message.success('导入成功')
+      },
+      funDownload(content, filename) {
+        const eleLink = document.createElement('a')
+        eleLink.download = filename
+        eleLink.style.display = 'none'
+        const blob = new Blob([content])
+        eleLink.href = URL.createObjectURL(blob)
+        document.body.appendChild(eleLink)
+        eleLink.click()
+        document.body.removeChild(eleLink)
+      },
+      downData(k) {
+        this.$store.dispatch('down' + k + 'Handler').then((res) => {
+          this.funDownload(JSON.stringify(res), 'down.json')
+        }).catch(() => {})
+      },
       toEtherscan(v) {
         window.location.href = `https://etherscan.io/search?q=${v}`
       },
