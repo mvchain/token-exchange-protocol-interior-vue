@@ -31,7 +31,7 @@ service.interceptors.response.use(
     if ((response.request.responseURL.indexOf('/transaction/collect/json') !== -1) ||
       (response.request.responseURL.indexOf('/transaction/transaction/json') !== -1)||
       (response.request.responseURL.indexOf('/transaction/all/json') !== -1)) {
-      return res
+      return response
     }
     if (res.status !== 200) {
       Message({

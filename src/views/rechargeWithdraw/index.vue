@@ -179,8 +179,9 @@
         document.body.removeChild(eleLink)
       },
       downData(k) {
+        const txt = k === 1 ? 'collect_' : k === 2 ? 'transaction_' : 'all_'
         this.$store.dispatch('down' + k + 'Handler').then((res) => {
-          this.funDownload(JSON.stringify(res), 'down.json')
+          this.funDownload(JSON.stringify(res.data), txt + Date.parse(new Date()) + '.json')
         }).catch(() => {})
       },
       toEtherscan(v) {
