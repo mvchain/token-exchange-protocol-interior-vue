@@ -25,6 +25,12 @@
       <el-form-item label="白皮书" prop="whitePaperAddress">
         <pro-oss @set-img-url="getImg"  :payload="'pdf'" :limit="10" :type="'white'"></pro-oss>
       </el-form-item>
+      <el-form-item label="白皮书链接">
+        <el-input v-model="ruleForm.whitePaperAddress"></el-input>
+      </el-form-item>
+      <el-form-item label="白皮书名称">
+        <el-input v-model="ruleForm.whitePaperName"></el-input>
+      </el-form-item>
       <el-form-item label="官网" prop="homepage">
         <el-input v-model="ruleForm.homepage"></el-input>
       </el-form-item>
