@@ -7,8 +7,11 @@
       <el-form-item label="币种名称" prop="tokenName">
         <el-input v-model="ruleForm.tokenName"></el-input>
       </el-form-item>
-      <el-form-item label="ETH购买总数" prop="ethNumber">
+      <el-form-item label="购买总数" prop="ethNumber">
         <el-input v-model="ruleForm.ethNumber"></el-input>
+      </el-form-item>
+      <el-form-item label="结算币种" prop="coin">
+        <el-input v-model="ruleForm.coin"></el-input>
       </el-form-item>
       <el-form-item label="兑换比例" prop="ratio">
         <el-input v-model="ruleForm.ratio"></el-input>
@@ -88,6 +91,7 @@
           leaderImageName: '',
           leaderName: '',
           position: '',
+          coin: 'ETH',
           projectCoverAddress: '',
           projectCoverName: '',
           projectImageAddress: '',
@@ -102,12 +106,15 @@
           whitePaperName: ''
         },
         rules: {
+          coin: [
+            {required: true, message: '请输入结算货币', trigger: 'blur'}
+          ],
           description: [
             {required: true, message: '请输入创始人介绍', trigger: 'blur'},
             {max: 500, message: '字数请少于500字', trigger: 'blur'}
           ],
           ethNumber: [
-            {required: true, message: '请输入ETH总数', trigger: 'blur'}
+            {required: true, message: '请输入总数', trigger: 'blur'}
           ],
           leaderImageAddress: [
             {required: true, message: '请上传创始人头像'}
@@ -170,6 +177,7 @@
       submitForm(name) {
         this.$refs[name].validate((valid) => {
           if (valid) {
+            this[name].coin = this[name].coin.toUpperCase()
             this[name].stopTime = Date.parse(this[name].startTime[1])
             this[name].startTime = Date.parse(this[name].startTime[0])
             this.$store.dispatch('putProject', this[name]).then(() => {
