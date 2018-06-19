@@ -83,7 +83,7 @@
       })
     },
     mounted() {
-      this.getList('pageNum=1&pageSize=11&orderBy=created_at desc')
+      this.getList('pageNum=1&pageSize=10&orderBy=created_at desc')
       this.$store.dispatch('getAddressCount')
     },
     methods: {
