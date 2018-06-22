@@ -22,7 +22,7 @@
           type="datetimerange"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
-          :default-time="['12:00:00']">
+          >
         </el-date-picker>
       </el-form-item>
       <el-form-item label="白皮书" prop="whitePaperAddress">
@@ -114,7 +114,7 @@
             {max: 500, message: '字数请少于500字', trigger: 'blur'}
           ],
           ethNumber: [
-            {required: true, message: '请输入总数', trigger: 'blur'}
+            { message: '请输入总数', trigger: 'blur'}
           ],
           leaderImageAddress: [
             {required: true, message: '请上传创始人头像'}
@@ -132,7 +132,7 @@
             {required: true, message: '请上传项目介绍图片'}
           ],
           ratio: [
-            {required: true, message: '请输入兑换比例', trigger: 'blur'}
+            {message: '请输入兑换比例', trigger: 'blur'}
           ],
           startTime: [
             {required: true, message: '请选择开放时间'}
@@ -175,20 +175,26 @@
         }
       },
       submitForm(name) {
+        const that = this
         this.$refs[name].validate((valid) => {
           if (valid) {
-            this[name].coin = this[name].coin.toUpperCase()
-            this[name].stopTime = Date.parse(this[name].startTime[1])
-            this[name].startTime = Date.parse(this[name].startTime[0])
-            this.$store.dispatch('putProject', this[name]).then(() => {
-              this.$router.back()
-              this.$message.success('修改成功')
+            that[name].coin = that[name].coin.toUpperCase()
+            if (!that[name].startTime) {
+              delete that[name].stopTime
+              delete that[name].startTime
+            } else {
+              that[name].stopTime = Date.parse(that[name].startTime[1])
+              that[name].startTime = Date.parse(that[name].startTime[0])
+            }
+            that.$store.dispatch('putProject', that[name]).then(() => {
+              that.$router.back()
+              that.$message.success('修改成功')
               window.sessionStorage.removeItem('fileList')
             }).catch((err) => {
-              this.$message.error(err)
+              that.$message.error(err)
             })
           } else {
-            this.$message.error('请完善表单')
+            that.$message.error('请完善表单')
             return false
           }
         })
@@ -196,12 +202,11 @@
       getInfo(id) {
         this.$store.dispatch('getProjectInfo', id).then(() => {
           const str = JSON.stringify(this.projectInfo)
-          const st = new Date(this.projectInfo.startTime)
-          const ot = new Date(this.projectInfo.stopTime)
-
+          const st = this.projectInfo.startTime ? new Date(this.projectInfo.startTime) : ''
+          const ot = this.projectInfo.stopTime ? new Date(this.projectInfo.stopTime) : ''
           this.ruleForm = JSON.parse(str)
-          this.ruleForm.ethNumber = String(this.ruleForm.ethNumber)
-          this.ruleForm.ratio = String(this.ruleForm.ratio)
+          this.ruleForm.ethNumber = this.ruleForm.ethNumber ? String(this.ruleForm.ethNumber) : ''
+          this.ruleForm.ratio = this.ruleForm.ratio ? String(this.ruleForm.ratio) : ''
           this.ruleForm.startTime = [
             st, ot
           ]

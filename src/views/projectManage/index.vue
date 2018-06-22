@@ -17,7 +17,7 @@
           label="时间段"
         >
           <template slot-scope="scope">
-            <span>{{scope.row.startTime}}至{{scope.row.stopTime}}</span>
+            <span>{{scope.row.startTime||'待定'}}至{{scope.row.stopTime||'待定'}}</span>
           </template>
         </el-table-column>
         <el-table-column

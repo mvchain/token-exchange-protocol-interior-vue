@@ -97,14 +97,14 @@
         },
         rules: {
           coin: [
-            {required: true, message: '请输入结算货币', trigger: 'blur'}
+            { required: true, message: '请输入结算货币', trigger: 'blur'}
           ],
           description: [
             { required: true, message: '请输入创始人介绍', trigger: 'blur' },
             { max: 500, message: '字数请少于500字', trigger: 'blur' }
           ],
           ethNumber: [
-            { required: true, message: '请输入总数', trigger: 'blur' }
+            { message: '请输入总数', trigger: 'blur' }
           ],
           leaderImageAddress: [
             { required: true, message: '请上传创始人头像' }
@@ -122,16 +122,16 @@
             { required: true, message: '请上传项目介绍图片' }
           ],
           ratio: [
-            { required: true, message: '请输入兑换比例', trigger: 'blur' }
+            { message: '请输入兑换比例', trigger: 'blur' }
           ],
           startTime: [
-            { required: true, message: '请选择开放时间' }
+            { message: '请选择开放时间' }
           ],
           homepage: [
             { required: true, message: '请输入官网地址', trigger: 'blur' }
           ],
           stopTime: [
-            { required: true, message: '请选择结束时间' }
+            { message: '请选择结束时间' }
           ],
           title: [
             { required: true, message: '请输入标题', trigger: 'blur' }
@@ -171,8 +171,8 @@
         this.$refs[name].validate((valid) => {
           if (valid) {
             this[name].coin = this[name].coin.toUpperCase()
-            this[name].stopTime = Date.parse(this[name].startTime[1])
-            this[name].startTime = Date.parse(this[name].startTime[0])
+            this[name].stopTime = this[name].startTime ? Date.parse(this[name].startTime[1]) : ''
+            this[name].startTime = this[name].startTime ? Date.parse(this[name].startTime[0]) : ''
             this.$store.dispatch('getAddProject', this[name]).then(() => {
               this.$router.back()
               this.$message.success('创建成功')
