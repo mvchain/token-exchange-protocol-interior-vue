@@ -14,11 +14,11 @@
           :headers="token"
           :on-success="handleAvatarSuccess"
           list-type="picture">
-          <el-button type="primary" >导入地址</el-button>
+          <el-button type="primary">导入地址</el-button>
         </el-upload>
       </el-col>
       <el-col :span="6">
-        <el-select v-model="orderStatus"  @change="changeStatus" placeholder="请选择">
+        <el-select v-model="orderStatus" @change="changeStatus" placeholder="请选择">
           <el-option
             v-for="item in (coinType === 0 ? options2 : options)"
             :key="item.value"
@@ -40,7 +40,7 @@
       <el-table-column
         prop="orderId"
         label="单号"
-        >
+      >
       </el-table-column>
       <el-table-column
         prop="createdAt"
@@ -68,7 +68,9 @@
         label="交易哈希"
       >
         <template slot-scope="scope">
-          <span class="to-etherscan" @click="toEtherscan(scope.row.hash)">{{scope.row.hash}}</span>
+          <span class="to-etherscan"
+                @click="toEtherscan(scope.row.hash, scope.row.toAddress.length)">{{scope.row.hash}}</span>
+
         </template>
       </el-table-column>
       <el-table-column
@@ -88,9 +90,9 @@
             <span class="el-dropdown-link">
               操作<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
-            <el-dropdown-menu slot="dropdown" >
-              <el-dropdown-item  @click.native="operaRequest({id: scope.row.id, status: 1})">同意</el-dropdown-item>
-              <el-dropdown-item  @click.native="operaRequest({id: scope.row.id, status: 9})">拒绝</el-dropdown-item>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item @click.native="operaRequest({id: scope.row.id, status: 1})">同意</el-dropdown-item>
+              <el-dropdown-item @click.native="operaRequest({id: scope.row.id, status: 9})">拒绝</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -108,8 +110,9 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import { getToken } from '@/utils/auth'
+  import {mapGetters} from 'vuex'
+  import {getToken} from '@/utils/auth'
+
   export default {
     name: 'rechargeWithdraw',
     data() {
@@ -182,10 +185,21 @@
         const txt = k === 1 ? 'collect_' : k === 2 ? 'transaction_' : 'all_'
         this.$store.dispatch('down' + k + 'Handler').then((res) => {
           this.funDownload(JSON.stringify(res.data), txt + Date.parse(new Date()) + '.json')
-        }).catch(() => {})
+        }).catch(() => {
+        })
       },
-      toEtherscan(v) {
-        window.location.href = `https://etherscan.io/search?q=${v}`
+      toEtherscan(v, n) {
+        switch (n) {
+          case 56:
+            window.open(`https://stellarchain.io/tx/${v}`)
+            break
+          case 34:
+            window.open(`http://explorer.bitcoingod.org/#/txts/${v}`)
+            break
+          case 42:
+            window.open(`https://etherscan.io/search?q=${v}`)
+            break
+        }
       },
       handleCurrentChange(v) {
         this.pageNum = v
@@ -227,5 +241,5 @@
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
- @import './index';
+  @import './index';
 </style>
