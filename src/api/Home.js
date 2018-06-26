@@ -75,3 +75,9 @@ export function cancelOrder(id) {
     method: 'put'
   })
 }
+export function balance(id) {
+  return request({
+    url: `/config/balance?tokenName=${id}`,
+    method: 'get'
+  })
+}

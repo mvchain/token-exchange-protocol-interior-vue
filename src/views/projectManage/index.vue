@@ -2,6 +2,9 @@
   <div class="project-manage">
     <div class="project-manage-title">
       <router-link  :to="{path: 'addProject'}" class="router-btn">新建项目</router-link>
+      <el-input placeholder="查询余额" v-model="searchBalance" style="margin-top:30px;">
+        <el-button slot="append" icon="el-icon-search" @click="searchBalanceHandler"></el-button>
+      </el-input>
     </div>
     <div>
       <el-table
@@ -69,7 +72,8 @@
         listLoading: false,
         pageNum: 1,
         toFlag: false,
-        toId: ''
+        toId: '',
+        searchBalance: ''
       }
     },
     mounted() {
@@ -82,6 +86,13 @@
       })
     },
     methods: {
+      searchBalanceHandler() {
+        this.$store.dispatch('getBalance', this.searchBalance).then((res) => {
+          this.$message.success(String(res) + ' ' + this.searchBalance)
+        }).catch((err) => {
+          this.$message.error(err)
+        })
+      },
       handleCurrentChange(v) {
         this.pageNum = v
         this.getProList(`pageNum=${v}&pageSize=10&orderBy=created_at desc`)

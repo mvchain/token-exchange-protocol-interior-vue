@@ -1,4 +1,4 @@
-import { cancelOrder, projectList, ossObjHandler, addProject, proInfo, orderHandler, salesHandler, deletePro, putShow, putProject, sendToken, retireToken } from '@/api/Home'
+import { balance, cancelOrder, projectList, ossObjHandler, addProject, proInfo, orderHandler, salesHandler, deletePro, putShow, putProject, sendToken, retireToken } from '@/api/Home'
 
 const Project = {
   state: {
@@ -134,6 +134,15 @@ const Project = {
       return new Promise((resolve, reject) => {
         cancelOrder(payload).then(res => {
           resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    getBalance: ({ commit, state }, payload) => {
+      return new Promise((resolve, reject) => {
+        balance(payload).then(res => {
+          resolve(res.data)
         }).catch(error => {
           reject(error)
         })
