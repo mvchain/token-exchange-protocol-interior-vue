@@ -2,7 +2,7 @@
   <div class="project-manage">
     <div class="project-manage-title">
       <router-link  :to="{path: 'addProject'}" class="router-btn">新建项目</router-link>
-      <el-input placeholder="查询余额" v-model="searchBalance" style="margin-top:30px;">
+      <el-input placeholder="冷钱包查询余额，输入token名称" v-model="searchBalance" style="margin-top:30px;">
         <el-button slot="append" icon="el-icon-search" @click="searchBalanceHandler"></el-button>
       </el-input>
     </div>

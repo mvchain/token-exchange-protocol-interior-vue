@@ -14,7 +14,7 @@
           :headers="token"
           :on-success="handleAvatarSuccess"
           list-type="picture">
-          <el-button type="primary">导入地址</el-button>
+          <el-button type="primary">导入签名</el-button>
         </el-upload>
       </el-col>
       <el-col :span="6">
@@ -54,9 +54,11 @@
       >
       </el-table-column>
       <el-table-column
-        prop="number"
         label="金额"
       >
+        <template slot-scope="scope">
+          {{scope.row.number}}{{scope.row.tokenName}}
+        </template>
       </el-table-column>
       <el-table-column
         prop="toAddress"
@@ -92,7 +94,7 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item @click.native="operaRequest({id: scope.row.id, status: 1})">同意</el-dropdown-item>
-              <el-dropdown-item @click.native="operaRequest({id: scope.row.id, status: 9})">拒绝</el-dropdown-item>
+              <el-dropdown-item @click.native="operaRequest({id: scope.row.id, status: 4})">拒绝</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
